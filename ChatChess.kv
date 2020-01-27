@@ -1,0 +1,108 @@
+#:kivy 1.11.0
+#:import Factory kivy.factory.Factory
+#:import config configurations
+
+Root:
+<Tile>:
+    canvas:
+        # Background
+        Color:
+            rgb: self.bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        # Highlight
+        Color:
+            rgb: self.highlight_color
+            a: 1 if self.highlighted else 0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+        # Piece image
+        Color:
+            rgb: 1, 1, 1
+            a: 1 if self.img else 0
+        Rectangle:
+            pos: self.pos
+            size: self.size
+            source: self.img
+        # Separator lines
+        Color:
+            rgb: 0, 0, 0
+        Line:
+            points: self.x, self.y, self.right, self.y
+            width: 2
+        Line:
+            points: self.right, self.y, self.right, self.top
+            width: 2
+
+<AboutPopup>:
+    title: 'About'
+    size_hint: .5, .5
+    
+    Label:
+        text: 'Chess game'
+
+<PreferencesPopup>:
+    title: 'Preferences'
+    size_hint: .5, .5
+
+    BoxLayout:
+        orientation: 'vertical'
+        padding: 10
+        spacing: 10
+
+        Button:
+            text: 'Select dark color'
+            on_release: root._pick_dark_color()
+        
+        Button:
+            text: 'Select light color'
+            on_release: root._pick_light_color()
+
+        Button:
+            text: 'Select highlight color'
+            on_release: root._pick_highlight_color()
+
+
+<Root>:
+    orientation: 'vertical'
+
+    BoxLayout:
+        size_hint_y: None
+        height: 40
+
+        Button:
+            text: 'New game'
+            on_release: root._start_new_game()
+
+        Button:
+            text: 'Preferences'
+            on_release: Factory.PreferencesPopup().open()
+
+        Button:
+            text: 'About'
+            on_release: Factory.AboutPopup().open()
+
+        Button:
+            text: 'Back'
+            on_release: root.back_to_chat()
+    GridLayout:
+        id: grid
+        cols: config.NUMBER_OF_COLUMNS
+        rows: config.NUMBER_OF_ROWS
+        size_hint: None, None
+        size: self.cols * config.DIMENSION_OF_EACH_SQUARE, self.rows * config.DIMENSION_OF_EACH_SQUARE
+        pos_hint: {'center_x': .5}
+
+    Label:
+        text: root._status_text
+        size_hint_y: None
+        height: 40
+        text_size: self.size
+        halign: 'right'
+        valign: 'center'
+        padding_x: 20
+
+    Widget:
+        # A filler widget
