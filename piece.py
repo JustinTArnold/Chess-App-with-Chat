@@ -118,11 +118,9 @@ class Pawn(Piece):
         if model.get_alphanumeric_position(forward) not in prohibited:
             allowed_moves.append(forward)
             if start_col == initial_row_position:
-                # If pawn is in starting position allow double moves
                 double_forward = (forward[0] + direction, forward[1])
                 if model.get_alphanumeric_position(double_forward) not in prohibited:
                     allowed_moves.append(double_forward)
-        # Attacking
         for a in range(-1, 2, 2):
             attack = start_col + direction, start_row + a
             if model.get_alphanumeric_position(attack) in model.all_positions_occupied_by_color(enemy):
